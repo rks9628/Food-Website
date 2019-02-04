@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RegistrationModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cust_feedback">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_id" Type="int" Nullable="false" />
+          <Property Name="f_id" Type="int" Nullable="false" />
+          <Property Name="rating_out_of_10" Type="int" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="suggeston" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customer_master">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_email_id" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_mobile" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="login_master">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="role" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="menu_master">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="f_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="category" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="available" Type="varchar(max)" Nullable="false" />
+          <Property Name="unit_price" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="days_available" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="special_dish" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="order_table">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="o_date" Type="date" Nullable="false" />
+          <Property Name="c_id" Type="int" Nullable="false" />
+          <Property Name="f_id" Type="int" Nullable="false" />
+          <Property Name="qty" Type="int" Nullable="false" />
+          <Property Name="unit_price" Type="int" Nullable="false" />
+          <Property Name="total" Type="bigint" Nullable="false" />
+          <Property Name="offer" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reservation_table">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_id" Type="int" Nullable="false" />
+          <Property Name="date_time" Type="datetime" Nullable="false" />
+          <Property Name="no_of_seats_required" Type="int" Nullable="false" />
+          <Property Name="ocassion" Type="varchar(max)" Nullable="false" />
+          <Property Name="table_number" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CONFIRM_PASSWORD" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EMAIL" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MOBILE" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_cust_feedback_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="cust_feedback" Type="Self.cust_feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="cust_feedback">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cust_feedback_menu_master">
+          <End Role="menu_master" Type="Self.menu_master" Multiplicity="1" />
+          <End Role="cust_feedback" Type="Self.cust_feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="menu_master">
+              <PropertyRef Name="f_id" />
+            </Principal>
+            <Dependent Role="cust_feedback">
+              <PropertyRef Name="f_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_table_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="order_table" Type="Self.order_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order_table">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_table_menu_master">
+          <End Role="menu_master" Type="Self.menu_master" Multiplicity="1" />
+          <End Role="order_table" Type="Self.order_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="menu_master">
+              <PropertyRef Name="f_id" />
+            </Principal>
+            <Dependent Role="order_table">
+              <PropertyRef Name="f_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reservation_table_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="reservation_table" Type="Self.reservation_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="reservation_table">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RegistrationModel1StoreContainer">
+          <EntitySet Name="cust_feedback" EntityType="Self.cust_feedback" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customer_master" EntityType="Self.customer_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="login_master" EntityType="Self.login_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="menu_master" EntityType="Self.menu_master" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order_table" EntityType="Self.order_table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reservation_table" EntityType="Self.reservation_table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_cust_feedback_customer_master" Association="Self.FK_cust_feedback_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="cust_feedback" EntitySet="cust_feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cust_feedback_menu_master" Association="Self.FK_cust_feedback_menu_master">
+            <End Role="menu_master" EntitySet="menu_master" />
+            <End Role="cust_feedback" EntitySet="cust_feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_table_customer_master" Association="Self.FK_order_table_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="order_table" EntitySet="order_table" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_table_menu_master" Association="Self.FK_order_table_menu_master">
+            <End Role="menu_master" EntitySet="menu_master" />
+            <End Role="order_table" EntitySet="order_table" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reservation_table_customer_master" Association="Self.FK_reservation_table_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="reservation_table" EntitySet="reservation_table" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RegistrationModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cust_feedback">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_id" Type="Int32" Nullable="false" />
+          <Property Name="f_id" Type="Int32" Nullable="false" />
+          <Property Name="rating_out_of_10" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="suggeston" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="customer_master" Relationship="Self.FK_cust_feedback_customer_master" FromRole="cust_feedback" ToRole="customer_master" />
+          <NavigationProperty Name="menu_master" Relationship="Self.FK_cust_feedback_menu_master" FromRole="cust_feedback" ToRole="menu_master" />
+        </EntityType>
+        <EntityType Name="customer_master">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_email_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_mobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="cust_feedback" Relationship="Self.FK_cust_feedback_customer_master" FromRole="customer_master" ToRole="cust_feedback" />
+          <NavigationProperty Name="order_table" Relationship="Self.FK_order_table_customer_master" FromRole="customer_master" ToRole="order_table" />
+          <NavigationProperty Name="reservation_table" Relationship="Self.FK_reservation_table_customer_master" FromRole="customer_master" ToRole="reservation_table" />
+        </EntityType>
+        <EntityType Name="login_master">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="menu_master">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="f_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="category" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="available" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="unit_price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="days_available" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="special_dish" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cust_feedback" Relationship="Self.FK_cust_feedback_menu_master" FromRole="menu_master" ToRole="cust_feedback" />
+          <NavigationProperty Name="order_table" Relationship="Self.FK_order_table_menu_master" FromRole="menu_master" ToRole="order_table" />
+        </EntityType>
+        <EntityType Name="order_table">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="o_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="c_id" Type="Int32" Nullable="false" />
+          <Property Name="f_id" Type="Int32" Nullable="false" />
+          <Property Name="qty" Type="Int32" Nullable="false" />
+          <Property Name="unit_price" Type="Int32" Nullable="false" />
+          <Property Name="total" Type="Int64" Nullable="false" />
+          <Property Name="offer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="customer_master" Relationship="Self.FK_order_table_customer_master" FromRole="order_table" ToRole="customer_master" />
+          <NavigationProperty Name="menu_master" Relationship="Self.FK_order_table_menu_master" FromRole="order_table" ToRole="menu_master" />
+        </EntityType>
+        <EntityType Name="reservation_table">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_id" Type="Int32" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="no_of_seats_required" Type="Int32" Nullable="false" />
+          <Property Name="ocassion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="table_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="customer_master" Relationship="Self.FK_reservation_table_customer_master" FromRole="reservation_table" ToRole="customer_master" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Uid" />
+          </Key>
+          <Property Name="Uid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="USERNAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CONFIRM_PASSWORD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MOBILE" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_cust_feedback_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="cust_feedback" Type="Self.cust_feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="cust_feedback">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cust_feedback_menu_master">
+          <End Role="menu_master" Type="Self.menu_master" Multiplicity="1" />
+          <End Role="cust_feedback" Type="Self.cust_feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="menu_master">
+              <PropertyRef Name="f_id" />
+            </Principal>
+            <Dependent Role="cust_feedback">
+              <PropertyRef Name="f_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_table_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="order_table" Type="Self.order_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order_table">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reservation_table_customer_master">
+          <End Role="customer_master" Type="Self.customer_master" Multiplicity="1" />
+          <End Role="reservation_table" Type="Self.reservation_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customer_master">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="reservation_table">
+              <PropertyRef Name="c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_order_table_menu_master">
+          <End Role="menu_master" Type="Self.menu_master" Multiplicity="1" />
+          <End Role="order_table" Type="Self.order_table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="menu_master">
+              <PropertyRef Name="f_id" />
+            </Principal>
+            <Dependent Role="order_table">
+              <PropertyRef Name="f_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RegistrationEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cust_feedback" EntityType="Self.cust_feedback" />
+          <EntitySet Name="customer_master" EntityType="Self.customer_master" />
+          <EntitySet Name="login_master" EntityType="Self.login_master" />
+          <EntitySet Name="menu_master" EntityType="Self.menu_master" />
+          <EntitySet Name="order_table" EntityType="Self.order_table" />
+          <EntitySet Name="reservation_table" EntityType="Self.reservation_table" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_cust_feedback_customer_master" Association="Self.FK_cust_feedback_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="cust_feedback" EntitySet="cust_feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cust_feedback_menu_master" Association="Self.FK_cust_feedback_menu_master">
+            <End Role="menu_master" EntitySet="menu_master" />
+            <End Role="cust_feedback" EntitySet="cust_feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_table_customer_master" Association="Self.FK_order_table_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="order_table" EntitySet="order_table" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reservation_table_customer_master" Association="Self.FK_reservation_table_customer_master">
+            <End Role="customer_master" EntitySet="customer_master" />
+            <End Role="reservation_table" EntitySet="reservation_table" />
+          </AssociationSet>
+          <AssociationSet Name="FK_order_table_menu_master" Association="Self.FK_order_table_menu_master">
+            <End Role="menu_master" EntitySet="menu_master" />
+            <End Role="order_table" EntitySet="order_table" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RegistrationModel1StoreContainer" CdmEntityContainer="RegistrationEntities2">
+          <EntitySetMapping Name="cust_feedback">
+            <EntityTypeMapping TypeName="RegistrationModel1.cust_feedback">
+              <MappingFragment StoreEntitySet="cust_feedback">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="f_id" ColumnName="f_id" />
+                <ScalarProperty Name="rating_out_of_10" ColumnName="rating_out_of_10" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="suggeston" ColumnName="suggeston" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customer_master">
+            <EntityTypeMapping TypeName="RegistrationModel1.customer_master">
+              <MappingFragment StoreEntitySet="customer_master">
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="c_name" ColumnName="c_name" />
+                <ScalarProperty Name="c_username" ColumnName="c_username" />
+                <ScalarProperty Name="c_password" ColumnName="c_password" />
+                <ScalarProperty Name="c_email_id" ColumnName="c_email_id" />
+                <ScalarProperty Name="c_mobile" ColumnName="c_mobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="login_master">
+            <EntityTypeMapping TypeName="RegistrationModel1.login_master">
+              <MappingFragment StoreEntitySet="login_master">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="menu_master">
+            <EntityTypeMapping TypeName="RegistrationModel1.menu_master">
+              <MappingFragment StoreEntitySet="menu_master">
+                <ScalarProperty Name="f_id" ColumnName="f_id" />
+                <ScalarProperty Name="f_name" ColumnName="f_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="available" ColumnName="available" />
+                <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+                <ScalarProperty Name="days_available" ColumnName="days_available" />
+                <ScalarProperty Name="special_dish" ColumnName="special_dish" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_table">
+            <EntityTypeMapping TypeName="RegistrationModel1.order_table">
+              <MappingFragment StoreEntitySet="order_table">
+                <ScalarProperty Name="o_id" ColumnName="o_id" />
+                <ScalarProperty Name="o_date" ColumnName="o_date" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="f_id" ColumnName="f_id" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+                <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="offer" ColumnName="offer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservation_table">
+            <EntityTypeMapping TypeName="RegistrationModel1.reservation_table">
+              <MappingFragment StoreEntitySet="reservation_table">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="date_time" ColumnName="date_time" />
+                <ScalarProperty Name="no_of_seats_required" ColumnName="no_of_seats_required" />
+                <ScalarProperty Name="ocassion" ColumnName="ocassion" />
+                <ScalarProperty Name="table_number" ColumnName="table_number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="RegistrationModel1.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Uid" ColumnName="Uid" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="CONFIRM_PASSWORD" ColumnName="CONFIRM_PASSWORD" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="MOBILE" ColumnName="MOBILE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
